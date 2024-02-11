@@ -1,0 +1,6 @@
+-r common.txt
+
+black~=23.0
+ipython~=8.0
+pylint~=3.0
+pylint-django~=2.5
