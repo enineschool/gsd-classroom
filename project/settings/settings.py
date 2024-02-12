@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     "qux",
     "qux.seo",
     "qux.auth",
-    "apps.gizmo",
+    "apps.voyage",
 ]
 
 MIDDLEWARE = [
@@ -188,10 +188,9 @@ GRAPH_MODELS = {
         "User",
         "ContentType",
         "CoreModel",
+        "QuxModel",
         "CoreModelAuditSummary",
         "CoreModelAuditDetails",
-        "AbstractMRDS",
-        "AbstractRefData",
     ],
     "disable_sort_fields": True,
     "arrow_shapw": "crow",
@@ -201,10 +200,8 @@ GRAPH_MODELS = {
 
 # Django Debug Toolbar
 INTERNAL_IPS = [
-    # ...
     "127.0.0.1",
-    # ...
 ]
 
-SITE_HEADER = os.getenv("SITE_HEADER", "Qjango by Qux")
-SITE_TITLE = os.getenv("SITE_TITLE", "Qjango")
+SITE_HEADER = os.getenv("SITE_HEADER", "Voyage")
+SITE_TITLE = os.getenv("SITE_TITLE", "Voyage from enine.school")
