@@ -28,7 +28,22 @@ source venv/bin/activate
 
 # Upgrade pip and install packages
 pip install --upgrade pip
-pip install -r requirements/dev.txt
+```
+
+You get this error if pip is not running at least version 24.0 
+
+```shell
+$ pip install -r requirements/prod.txt 
+Usage: pip [options]
+
+ERROR: Invalid requirement: pygraphviz==1.11 --config-settings="--global-option=build_ext" --config-settings="--global-option=-I$(brew --prefix graphviz)/include/" --config-settings="--global-option=-L$(brew --prefix graphviz)/lib/"; sys_platform == "darwin"
+pip: error: no such option: --config-settings
+```
+
+Upgrading pip will solve the problem.
+
+```shell
+pip install -r requirements/prod.txt
 
 # Migrate models to db.sqlite3
 python manage.py migrate

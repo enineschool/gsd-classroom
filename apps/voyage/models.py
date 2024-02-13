@@ -81,7 +81,7 @@ class Student(QuxModel):
     user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE)
     github = models.CharField(max_length=39, unique=True)
     is_active = models.BooleanField(default=True)
-    program = models.OneToOneField("Program", on_delete=models.DO_NOTHING)
+    program = models.ForeignKey(Program, on_delete=models.DO_NOTHING)
 
     def courses(self):
         return Course.objects.none()

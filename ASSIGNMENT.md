@@ -8,6 +8,10 @@ Build a web application that allows
 
 ## Data Model
 
+Color coding:<br>
+– Gray lines = `on_delete=DO_NOTHING`<br>
+– Red lines = `on_delete=CASCADE`
+
 [![Voyage Data Model](voyage.png)](voyage.png)
 
 ## Tasks
