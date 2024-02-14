@@ -8,17 +8,37 @@ class Faculty(QuxModel):
     github = models.CharField(max_length=39, unique=True)
     is_active = models.BooleanField(default=True)
 
+    class Meta:
+        verbose_name_plural = "Faculty"
+
     def programs(self):
-        return Program.objects.none()
+        assignments = Assignment.objects.filter(content__faculty=self)
+        program_ids = assignments.values_list("program").distinct()
+        return Program.objects.filter(id__in=program_ids)
 
     def courses(self):
-        return Course.objects.none()
+        assignments = Assignment.objects.filter(content__faculty=self)
+        course_ids = assignments.values_list("course").distinct()
+        return Course.objects.filter(id__in=course_ids)
 
     def content(self, program=None, course=None):
-        return Course.objects.none()
+        if program is None and course is None:
+            return getattr(self, "content", Content.objects.none())
+
+        params = {
+            "content__faculty": self,
+        }
+        if program:
+            params["assignment__program"] = program
+        if course:
+            params["assignment__course"] = course
+        queryset = Assignment.objects.filter(**params).select_related("content")
+        return queryset
 
     def assignments_graded(self, assignment=None):
-        return StudentAssignment.objects.none()
+        # Should null grades be excluded? Why?
+        queryset = StudentAssignment.objects.filter(reviewer=self)
+        return queryset
 
 
 class Program(QuxModel):
@@ -37,7 +57,7 @@ class Program(QuxModel):
         """
         List of students in the program
         """
-        return Student.objects.none()
+        return getattr(self, "students", Student.objects.none())
 
 
 class Course(QuxModel):
@@ -84,10 +104,14 @@ class Student(QuxModel):
     program = models.ForeignKey(Program, on_delete=models.DO_NOTHING)
 
     def courses(self):
-        return Course.objects.none()
+        queryset = Assignment.objects.filter(program=self.program).select_related(
+            "course"
+        )
+        return queryset
 
     def assignments(self):
-        return Assignment.objects.none()
+        queryset = StudentAssignment.objects.filter(student=self)
+        return queryset
 
     def assignments_submitted(self, assignment=None):
         return StudentAssignment.objects.none()
@@ -114,7 +138,9 @@ class Assignment(QuxModel):
         return self.content.name
 
     def students(self):
-        return Student.objects.none()
+        return getattr(self, "programs", Program.objects.none()).select_related(
+            "student"
+        )
 
     def submissions(self, graded=None):
         """
