@@ -1,7 +1,7 @@
 from django.urls import path
 
+from ..views.appviews import VoyageDefaultView
 
 urlpatterns = [
-    path("", ApplicationDefaultView.as_view(), name="home"),
+    path("", VoyageDefaultView.as_view(), name="home"),
 ]
-

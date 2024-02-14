@@ -13,4 +13,3 @@ class VoyageConfig(AppConfig):
 
         if settings.DEBUG:
             print("Loaded aperture signals")
-
